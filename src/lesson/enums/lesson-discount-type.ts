@@ -1,0 +1,9 @@
+export enum LessonDiscountTypeEnum {
+  VALUE_TYPE_PERCENTAGE = 1,
+  VALUE_TYPE_DOLLAR = 0,
+  CUSTOMER = 1,
+  ENROLMENT_PAYMENT_FREQUENCY = 2,
+  MULTIPLE_ENROLMENT = 3,
+  LINE_ITEM = 4,
+  GROUP = 5,
+}

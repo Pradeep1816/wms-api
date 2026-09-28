@@ -1,0 +1,36 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    // Off deliberately, and it must stay off while nest-cli sets
+    // `deleteOutDir`. The two contradict each other: the build wipes dist/
+    // and TypeScript then reads tsconfig.build.tsbuildinfo, concludes nothing
+    // has changed since the last successful compile, and emits NOTHING. The
+    // build reports success in about fifteen seconds and leaves an empty
+    // dist/, so the only symptom is `nest start` failing with
+    // "Cannot find module dist/main" - which reads as a broken build rather
+    // than stale state.
+    //
+    // Any `rm -rf dist`, or a build interrupted after the wipe, is enough to
+    // desynchronise them. A full build is ~15-30s, which is not worth the
+    // trap.
+    "incremental": false,
+    // Pinned, not inferred. Without it TypeScript derives the root from
+    // whatever files happen to be included, so one .ts file added outside
+    // src/ silently moves the build from dist/main.js to dist/src/main.js -
+    // and the only symptom is the deploy failing with
+    // "Cannot find module '/apps/dist/main.js'". Pinning it turns that into
+    // a compile error naming the offending file instead.
+    "rootDir": "./src"
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test",
+    "tests",
+    "worktrees",
+    "scripts",
+    "vitest.config.mts",
+    "**/*spec.ts"
+  ]
+}
